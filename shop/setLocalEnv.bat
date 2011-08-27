@@ -1,0 +1,1 @@
+mvn gwt:compile eclipse:eclipse sysdeo-tomcat:generate
