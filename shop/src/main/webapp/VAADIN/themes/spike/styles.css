@@ -1,0 +1,53 @@
+@import url(../reindeer/styles.css);
+
+.top {
+    background: transparent url(images/top-bg.png) repeat-x;
+}
+
+.footer {
+    background: transparent url(images/footer-bg.png) repeat-x;
+}
+
+.v-label-h2 {
+    text-shadow: none;
+}
+
+
+.v-splitpanel-first-container-main-split {
+    background: #eaebec url(images/tree-bg.png) repeat-x fixed;
+    font-family: arial, helvetica, verdana, sans-serif;
+}
+
+.v-splitpanel-hsplitter-main-split div {
+    background: none repeat scroll 0 0 transparent;
+    border: medium none;
+    margin: 0 -1px;
+    padding: 0;
+    width: 1px;
+}
+
+.v-splitpanel-hsplitter {
+    background-color: black;
+    width: 1px;
+}
+
+.v-splitpanel-second-container-main-split {
+    background: url("images/main-bg.png") repeat-x scroll 0 0 #FFFFFF;
+}
+
+.title-section h2 {
+    font-family: "Helvetica Neue", helvetica, arial, verdana, sans-serif;
+    margin: 0 20px 0 0;
+    font-size: 22px;
+    font-weight: bold;
+    text-shadow: 0 2px 1px #c0c1c2;
+    color: #1e2229;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+.title-bg {
+    background: url("images/feature-controls-border.png") repeat-x scroll 0 28px transparent;
+    padding-bottom: 6px;
+}

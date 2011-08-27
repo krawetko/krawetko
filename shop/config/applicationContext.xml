@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                               http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+                               http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                               http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+  <context:property-placeholder location="classpath*:*.properties" />
+  <context:annotation-config />
+  <!-- Turn on @Autowired, @PostConstruct etc support -->
+  <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+  <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
+
+  <bean id="uri" class="com.vaadin.ui.UriFragmentUtility" />
+
+  <bean id="viewManager" class="com.sabre.myfares.spike.ViewManager" init-method="init">
+    <property name="body" ref="body" />
+    <property name="uri" ref="uri" />
+    <property name="viewsByUri">
+      <map>
+        <entry key="products" value-ref="productView" />
+        <entry key="details" value-ref="productDetailsView" />
+      </map>
+    </property>
+
+  </bean>
+
+  <bean id="shopService" factory-method="getShopService" class="com.sabre.myfares.spike.ShopServiceLocator" />
+  <bean id="delayedShopService" factory-method="getDelayedShopService" class="com.sabre.myfares.spike.ShopServiceLocator">
+    <constructor-arg value="${database.delay}" />
+  </bean>
+
+  <bean id="productDetails" class="com.sabre.myfares.spike.ui.view.domain.impl.ProductDetails" />
+  <bean id="productTable" class="com.sabre.myfares.spike.ui.view.domain.impl.ProductTable">
+    <property name="showProductsDetailsPresenter" ref="showProductsDetailsPresenter" />
+  </bean>
+  <bean id="categoryTree" class="com.sabre.myfares.spike.ui.view.domain.impl.CategoryTree" />
+  <bean id="shoppingCard" class="com.sabre.myfares.spike.ui.view.domain.impl.ShoppingCard" />
+  <bean id="shoppingCardView" class="com.sabre.myfares.spike.ui.view.ShoppingCardView" init-method="init">
+    <property name="shoppingCard" ref="shoppingCard" />
+  </bean>
+
+  <bean id="productView" class="com.sabre.myfares.spike.ui.view.ProductView" init-method="init">
+    <property name="productTable" ref="productTable" />
+    <property name="addProductsShoppingCardPresenter" ref="addProductsShoppingCardPresenter"></property>
+  </bean>
+
+  <bean id="productDetailsView" class="com.sabre.myfares.spike.ui.view.ProductDetailsView" init-method="init">
+    <property name="productDetails" ref="productDetails" />
+  </bean>
+
+  <bean id="categoryView" class="com.sabre.myfares.spike.ui.view.CategoryView" init-method="init">
+    <property name="showProductsPresenter" ref="showProductsPresenter" />
+    <property name="showCategoriesPresenter" ref="showCategoriesPresenter" />
+    <property name="categoryTree" ref="categoryTree" />
+  </bean>
+
+  <bean id="body" class="com.vaadin.ui.HorizontalSplitPanel" />
+
+
+  <bean id="showProductsPresenter" class="com.sabre.myfares.spike.presenter.impl.ShowProductsPresenterImpl">
+    <property name="productTableDomainView" ref="productTable" />
+    <property name="shopService" ref="shopService" />
+    <property name="uri" ref="uri" />
+  </bean>
+
+  <bean id="showProductsDetailsPresenter" class="com.sabre.myfares.spike.presenter.impl.ShowProductsDetailsPresenterImpl">
+    <property name="productDetailsDomainView" ref="productDetails" />
+    <property name="shopService" ref="shopService" />
+    <property name="uri" ref="uri" />
+  </bean>
+
+  <bean id="showCategoriesPresenter" class="com.sabre.myfares.spike.presenter.impl.ShowCategoriesPresenterImpl">
+    <property name="categoryTreeDomainView" ref="categoryTree" />
+    <property name="shopService" ref="shopService" />
+  </bean>
+
+  <bean id="addProductsShoppingCardPresenter" class="com.sabre.myfares.spike.presenter.impl.AddProductsShoppingCardPresenterImpl">
+    <property name="shoppingCardDomainView" ref="shoppingCard" />
+    <property name="productTableDomainView" ref="productTable" />
+    <property name="shopService" ref="shopService" />
+  </bean>
+
+  <bean id="header" class="com.sabre.myfares.spike.ui.view.HeaderView">
+    <property name="shoppingCardView" ref="shoppingCardView" />
+  </bean>
+
+  <bean id="footer" class="com.sabre.myfares.spike.ui.view.FooterView" />
+
+  <bean id="application" class="com.sabre.myfares.spike.SpikeApplication">
+    <property name="header" ref="header" />
+    <property name="category" ref="categoryView" />
+    <property name="product" ref="productView" />
+    <property name="body" ref="body" />
+    <property name="footer" ref="footer" />
+    <property name="uri" ref="uri" />
+  </bean>
+</beans>
